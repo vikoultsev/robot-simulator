@@ -1,0 +1,23 @@
+.App {
+  margin: 0 auto;
+  display: flex;
+  width: 1000px;
+}
+
+.App__tools {
+  margin-left: 40px;
+  flex-grow: 1;
+}
+
+.App__report {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.App__error {
+  margin-top: 15px;
+  color: tomato;
+  font-weight: bold;
+}
+

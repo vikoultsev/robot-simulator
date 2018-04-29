@@ -1,0 +1,30 @@
+.Form {
+  display: block;
+  text-align: center;
+}
+
+.Form__buttons {
+  margin-top: 20px;
+}
+
+.Form__button {
+  margin: 0 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  display: inline-block;
+  align-items: center;
+  box-sizing: border-box;
+  height: 40px;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+  color: #fff;
+  border: none;
+  background-color: rgb(165, 165, 165);
+  cursor: pointer;
+  user-select: none;
+  transition-duration: 0.2s;
+  transition-property: background-color, color;
+  transition-timing-function: ease-out, ease-out;
+}
+

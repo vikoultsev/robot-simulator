@@ -1,0 +1,17 @@
+{
+    "extends": [
+        "react-app",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "rules": {
+        "react/require-optimization": "warn",
+        "react/no-redundant-should-component-update": "warn",
+        "no-debugger": "error",
+        "no-console": "warn",
+        "jsx-a11y/no-static-element-interactions": "warn",
+        "react/jsx-key": "warn",
+        "react/jsx-handler-names": "warn",
+        "react/jsx-no-bind": "warn"
+    }
+}
