@@ -4,6 +4,7 @@ import Form from '../Form/Form';
 import Table from '../Table/Table';
 import { setCommandList, makeMovementStep, finishMovement, catchError } from '../../reducers/robotPlace';
 import { COMMAND_PLACE } from '../../constants/commands';
+import positionDoesNotChange from '../../utils/positionDoesNotChange';
 import './App.css';
 
 class App extends PureComponent {
@@ -12,7 +13,7 @@ class App extends PureComponent {
     if(commandsList.length && !robotPlaced && commandsList[0].command !== COMMAND_PLACE) {
       this.props.dispatch(catchError(new Error('You should place the robot first. Use command "PLACE X,Y,DIRECTION"')))
     }
-    if (commandsList.length && !robotPlaced && commandsList[0].command === COMMAND_PLACE) {
+    if (commandsList.length && !robotPlaced && commandsList[0].command === COMMAND_PLACE && !positionDoesNotChange(this.props.currentPosition, commandsList[0].params)) {
       setTimeout(() => {
         this.props.dispatch(makeMovementStep(commandsList[0]));
       }, 5000);
@@ -21,7 +22,7 @@ class App extends PureComponent {
 
   componentDidUpdate() {
     const { commandsList, robotPlaced, nextPosition, steps, isFirstPlaceStep, error, movement } = this.props;
-    if (commandsList.length && robotPlaced && !nextPosition && !error && !movement) {
+    if (commandsList.length && robotPlaced && !nextPosition && !error && !movement && !positionDoesNotChange(this.props.currentPosition, commandsList[0].params)) {
       this.props.dispatch(makeMovementStep(commandsList[0]));
     }
     if (steps.length && isFirstPlaceStep) {
@@ -49,7 +50,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const { currentPosition: { x, y, direction, rotationAngle }, error, report } = this.props;
+    const { robotPlaced, currentPosition: { x, y, direction, rotationAngle }, error, report } = this.props;
     return (
       <div className="App">
         <div className="App__table">
@@ -65,6 +66,7 @@ class App extends PureComponent {
             <Form
               onSubmit={this.handleFormSubmit}
             />
+            {!robotPlaced && <div className="App__report">Movement will start in 5 seconds you issue PLACE command and press the "Submit" key.</div>}
             {report && <div className="App__report">{`Output: ${x},${y},${direction}`}</div>}
           </div>
           <div className="App__logs">
