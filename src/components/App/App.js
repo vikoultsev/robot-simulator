@@ -4,7 +4,7 @@ import Form from '../Form/Form';
 import Table from '../Table/Table';
 import { setCommandList, makeMovementStep, finishMovement, catchError } from '../../reducers/robotPlace';
 import { COMMAND_PLACE } from '../../constants/commands';
-import positionDoesNotChange from '../../utils/positionDoesNotChange';
+import positionWillChange from '../../utils/positionWillChange';
 import './App.css';
 
 class App extends PureComponent {
@@ -13,7 +13,7 @@ class App extends PureComponent {
     if(commandsList.length && !robotPlaced && commandsList[0].command !== COMMAND_PLACE) {
       this.props.dispatch(catchError(new Error('You should place the robot first. Use command "PLACE X,Y,DIRECTION"')))
     }
-    if (commandsList.length && !robotPlaced && commandsList[0].command === COMMAND_PLACE && !positionDoesNotChange(this.props.currentPosition, commandsList[0].params)) {
+    if (commandsList.length && !robotPlaced && commandsList[0].command === COMMAND_PLACE && positionWillChange(this.props.currentPosition, commandsList[0].params)) {
       setTimeout(() => {
         this.props.dispatch(makeMovementStep(commandsList[0]));
       }, 5000);
@@ -22,7 +22,7 @@ class App extends PureComponent {
 
   componentDidUpdate() {
     const { commandsList, robotPlaced, nextPosition, steps, isFirstPlaceStep, error, movement } = this.props;
-    if (commandsList.length && robotPlaced && !nextPosition && !error && !movement && !positionDoesNotChange(this.props.currentPosition, commandsList[0].params)) {
+    if (commandsList.length && robotPlaced && !nextPosition && !error && !movement && positionWillChange(this.props.currentPosition, commandsList[0].params)) {
       this.props.dispatch(makeMovementStep(commandsList[0]));
     }
     if (steps.length && isFirstPlaceStep) {
